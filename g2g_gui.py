@@ -5,6 +5,8 @@ import os
 import string
 
 from tkinter import *
+from tkinter import filedialog
+from tkinter import messagebox
 from os import path, access, R_OK, W_OK
 
 top = tkinter.Tk()
@@ -43,7 +45,7 @@ force = [8,30]
 cut_mode = 0
 
 def floats(s):
-  return map(float,string.split(s,','))
+  return list(map(float,str.split(s,',')))
 
 def main_program():
   #
@@ -53,7 +55,7 @@ def main_program():
   if not os.path.exists(Gerber_name.get()):
     get_input_filename()
   if not os.path.exists(Gerber_name.get()):
-    tkMessageBox.showerror("G2G_GUI ERROR", "The path provided for the input Gerber file is invalid.")
+    tkinter.messagebox.showerror("G2G_GUI ERROR", "The path provided for the input Gerber file is invalid.")
     return
 
   head, tail = os.path.split(Gerber_name.get())
@@ -68,11 +70,11 @@ def main_program():
 
   if os.name=='nt':
     if not os.path.exists(gerbv_path.get()):
-      tkMessageBox.showerror("G2G_GUI ERROR", "The path provided for gerbv is invalid.")
+      tkinter.messagebox.showerror("G2G_GUI ERROR", "The path provided for gerbv is invalid.")
       return
 
     if not os.path.exists(pstoedit_path.get()):
-      tkMessageBox.showerror("G2G_GUI ERROR", "The path provided for pstoedit is invalid.")
+      tkinter.messagebox.showerror("G2G_GUI ERROR", "The path provided for pstoedit is invalid.")
       return
   
   if os.name=='nt':
@@ -151,7 +153,7 @@ def main_program():
 
   if Output_name.get():
     sys.stdout = original_stdout  # restore STDOUT back to its original value
-    tkMessageBox.showinfo("G2G_GUI Message", "File '%s' created"  % (Output_name.get()) )
+    tkinter.messagebox.showinfo("G2G_GUI Message", "File '%s' created"  % (Output_name.get()) )
 
 def Save_Configuration():
     f = open(CONFPATH,'w')
@@ -179,11 +181,11 @@ def Send_to_Cutter():
     src=os.path.normpath(Output_name.get())
     
     if not cutter_shared_name_str.get():
-      tkMessageBox.showerror("G2G_GUI ERROR", "The name of the cutter (as a shared printer) was not provided.")
+      tkinter.messagebox.showerror("G2G_GUI ERROR", "The name of the cutter (as a shared printer) was not provided.")
       return
 
     #if not os.path.exists(cutter_shared_name_str.get()):
-    #  tkMessageBox.showerror("G2G_GUI ERROR", "The name of the cutter (as a shared printer) does not exist.")
+    #  tkinter.messagebox.showerror("G2G_GUI ERROR", "The name of the cutter (as a shared printer) does not exist.")
     #  return
     
     dst=os.path.normpath(cutter_shared_name_str.get())
@@ -193,22 +195,22 @@ def Send_to_Cutter():
       os.system("cat %s > %s" % (src, dst))
 
 def get_input_filename():
-    input_filename=tkFileDialog.askopenfilename(title='Select paste mask Gerber file', filetypes=[('Gerber File', '*.g*'),("All files", "*.*")] )
+    input_filename=tkinter.filedialog.askopenfilename(title='Select paste mask Gerber file', filetypes=[('Gerber File', '*.g*'),("All files", "*.*")] )
     if input_filename:
         Gerber_name.set(input_filename)
 
 def get_output_filename():
-    output_filename=tkFileDialog.asksaveasfilename(title='Select output filename', filetypes=[('Output files', '*.txt'),("All files", "*.*")] )
+    output_filename=tkinter.filedialog.asksaveasfilename(title='Select output filename', filetypes=[('Output files', '*.txt'),("All files", "*.*")] )
     if output_filename:
         Output_name.set(output_filename)
 
 def get_gerbv_path():
-    gerbv_filename=tkFileDialog.askopenfilename(title='Select gerbv program', initialfile='gerbv.exe', filetypes=[('Programs', '*.exe')] )
+    gerbv_filename=tkinter.filedialog.askopenfilename(title='Select gerbv program', initialfile='gerbv.exe', filetypes=[('Programs', '*.exe')] )
     if gerbv_filename:
         gerbv_path.set(gerbv_filename)
 
 def get_pstoedit_path():
-    pstoedit_filename=tkFileDialog.askopenfilename(title='Select gerbv program', initialfile='pstoedit.exe', filetypes=[('Programs', '*.exe')] )
+    pstoedit_filename=tkinter.filedialog.askopenfilename(title='Select gerbv program', initialfile='pstoedit.exe', filetypes=[('Programs', '*.exe')] )
     if pstoedit_filename:
         pstoedit_path.set(pstoedit_filename)
 
